@@ -15,7 +15,7 @@ class barGraph_Coin extends StatelessWidget {
         twentyCount: coinReport[3]);
     thisbarData.initializeBarData_Coin();
     return BarChart(BarChartData(
-        maxY: 300,
+        maxY: 200,
         minY: 0,
         gridData: FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -33,7 +33,7 @@ class barGraph_Coin extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       backDrawRodData: BackgroundBarChartRodData(
                         show: true,
-                        toY: 300,
+                        toY: 200,
                         color: Colors.blue[200],
                       ))
                 ]))

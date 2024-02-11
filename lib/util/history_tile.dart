@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class History_Tile extends StatelessWidget {
-  const History_Tile({super.key});
+  final String amount;
+  final String timestamp;
+  const History_Tile(
+      {super.key, required this.amount, required this.timestamp});
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +15,16 @@ class History_Tile extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.blueAccent[100],
             borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [Text("Inserted *Amount*"), Text("@ Date")],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Inserted " + amount,
+              style: TextStyle(color: Colors.black87),
+            ),
+            Text("@ " + timestamp.toString(),
+                style: TextStyle(color: Colors.black87))
+          ],
         ),
       ),
     );

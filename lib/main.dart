@@ -1,11 +1,20 @@
+import 'package:ealkansyaapp/pages/BL/bluetooth.dart';
 import 'package:ealkansyaapp/pages/analytics_page.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/coin_report.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/week_report.dart';
+import 'package:ealkansyaapp/pages/bluetooth/blConnect.dart';
+import 'package:ealkansyaapp/pages/mysaving_page.dart';
 import 'package:ealkansyaapp/pages/reciept_page.dart';
 import 'package:ealkansyaapp/pages/start_page.dart';
+import 'package:ealkansyaapp/pages/test.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
   runApp(const MyApp());
 }
 
@@ -21,6 +30,9 @@ class MyApp extends StatelessWidget {
         '/analytics_page': (context) => analytics_page(),
         '/week_report': (context) => week_report(),
         '/coin_drop': (context) => coin_report(),
+        '/saving': (context) => mysavings(),
+        '/test': (context) => test(),
+        '/blue': (context) => FlutterBluetooth(),
       },
     );
   }

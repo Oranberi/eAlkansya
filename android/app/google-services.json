@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "49340287565",
+    "project_id": "ealkansya",
+    "storage_bucket": "ealkansya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49340287565:android:320ca54ba37a30981baa04",
+        "android_client_info": {
+          "package_name": "com.example.ealkansyaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0h6-ONuSMdN-KKDV6GLzflSDyeQ_YoM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,16 +9,16 @@ class barGraph_Week extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BarData_Week thisbarData = BarData_Week(
-        sunAmount: weekReport[0],
-        monAmount: weekReport[1],
-        tueAmount: weekReport[2],
-        wedAmount: weekReport[3],
-        thurAmount: weekReport[4],
-        friAmount: weekReport[5],
-        satAmount: weekReport[6]);
+        monAmount: weekReport[0],
+        tueAmount: weekReport[1],
+        wedAmount: weekReport[2],
+        thurAmount: weekReport[3],
+        friAmount: weekReport[4],
+        satAmount: weekReport[5],
+        sunAmount: weekReport[6]);
     thisbarData.initializeBarData_Week();
     return BarChart(BarChartData(
-        maxY: 300,
+        maxY: 200,
         minY: 0,
         gridData: FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -40,7 +40,7 @@ class barGraph_Week extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       backDrawRodData: BackgroundBarChartRodData(
                         show: true,
-                        toY: 300,
+                        toY: 200,
                         color: Colors.blue[200],
                       ))
                 ]))
@@ -54,25 +54,25 @@ class barGraph_Week extends StatelessWidget {
     Widget text = const Text('M', style: style);
     switch (value.toInt()) {
       case 0:
-        text = const Text('S', style: style);
-        break;
-      case 1:
         text = const Text('M', style: style);
         break;
-      case 2:
+      case 1:
         text = const Text('T', style: style);
         break;
-      case 3:
+      case 2:
         text = const Text('W', style: style);
         break;
-      case 4:
-        text = const Text('TH', style: style);
+      case 3:
+        text = const Text('Th', style: style);
         break;
-      case 5:
+      case 4:
         text = const Text('F', style: style);
         break;
-      case 6:
+      case 5:
         text = const Text('S', style: style);
+        break;
+      case 6:
+        text = const Text('Su', style: style);
         break;
       default:
     }

@@ -1,10 +1,13 @@
 import 'package:ealkansyaapp/util/history_tile.dart';
 import 'package:ealkansyaapp/util/drawer_tile.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 
-int amount = 1000;
+int amount = 0;
 String amountS = amount.toString();
 bool isShown = true;
+DateTime now = DateTime.now();
 
 class Start extends StatefulWidget {
   @override
@@ -15,19 +18,51 @@ class Start extends StatefulWidget {
 }
 
 class StartPage extends State<Start> {
+  final dbRef = FirebaseDatabase.instance.ref('savings');
+  final coinRef = FirebaseDatabase.instance.ref('coin');
+
+  @override
+  void initState() {
+    getAmount();
+    super.initState();
+  }
+
+  Future<void> getAmount() async {
+    final snapshot = await dbRef.child("totalAmount").get();
+    if (snapshot.exists) {
+      var totalAmount = snapshot.value;
+      setState(() {
+        amount = int.parse(totalAmount.toString());
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("does not eXist"),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer_Tile(),
+        // drawer: Drawer_Tile(),
         appBar: AppBar(
           title: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "LOGO",
+              "eAlkansya",
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                getAmount();
+              },
+              icon: Icon(Icons.refresh),
+              color: Colors.white,
+            )
+          ],
           backgroundColor: Colors.blue[700],
           elevation: 0,
         ),
@@ -40,10 +75,20 @@ class StartPage extends State<Start> {
                 ),
                 child: Column(
                   children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/saving");
+                      },
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.transparent),
+                          backgroundColor: Colors.blue[500]),
+                      child: Text("My Saving",
+                          style: TextStyle(color: Colors.white)),
+                    ),
                     Expanded(
                         flex: 0,
                         child: Container(
-                            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                             decoration: BoxDecoration(
                               color: Colors.blue[500],
                               borderRadius:
@@ -55,7 +100,8 @@ class StartPage extends State<Start> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.fromLTRB(50, 35, 0, 0),
+                                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      padding: EdgeInsets.all(30),
                                       child: Align(
                                         alignment: Alignment.topLeft,
                                         child: Text(
@@ -68,19 +114,6 @@ class StartPage extends State<Start> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(50, 0, 0, 30),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          "My Savings",
-                                          style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    )
                                   ],
                                 ),
                                 Expanded(
@@ -114,7 +147,7 @@ class StartPage extends State<Start> {
                     Expanded(
                         flex: 0,
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 40, 10, 30),
+                          padding: EdgeInsets.fromLTRB(0, 10, 10, 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -156,24 +189,6 @@ class StartPage extends State<Start> {
                                   )
                                 ],
                               ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.lock,
-                                    ),
-                                    iconSize: 70,
-                                    color: Colors.blue[100],
-                                    onPressed: () {
-                                      print("button 3");
-                                    },
-                                  ),
-                                  Text(
-                                    "TBU",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
                             ],
                           ),
                         )),
@@ -193,15 +208,46 @@ class StartPage extends State<Start> {
                   )),
               Expanded(
                   child: Container(
-                child: ListView.builder(
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return History_Tile();
-                  },
-                ),
-              ))
+                      constraints: BoxConstraints(minHeight: 200),
+                      child: FirebaseAnimatedList(
+                        query: coinRef.orderByChild('dateInserted'),
+                        reverse: true,
+                        itemBuilder: (context, snapshot, animation, index) {
+                          int millis = int.parse(
+                              snapshot.child('dateInserted').value.toString());
+                          return History_Tile(
+                              amount: snapshot.child('value').value.toString(),
+                              timestamp: getMonth(millis));
+                        },
+                      )))
             ],
           ),
         ));
+  }
+
+  String formatDate(int millis) {
+    DateTime thisDate = DateTime.fromMillisecondsSinceEpoch(millis);
+    String month = "${thisDate.month}";
+    String day = "${thisDate.day}";
+
+    String formattedDate = month + " " + day;
+    return formattedDate;
+  }
+
+  String getMonth(int millis) {
+    DateTime thisDate = DateTime.fromMillisecondsSinceEpoch(millis);
+    String timeAgoStatus = "";
+    final duration = DateTime.now().difference(thisDate);
+    if (duration.inSeconds < 60) {
+      timeAgoStatus = "Just now";
+    } else if (duration.inMinutes < 60) {
+      timeAgoStatus = "${duration.inMinutes} minutes ago";
+    } else if (duration.inHours < 24) {
+      timeAgoStatus = "${duration.inHours} hours ago";
+    } else {
+      timeAgoStatus = "${duration.inDays} days ago";
+    }
+
+    return timeAgoStatus;
   }
 }

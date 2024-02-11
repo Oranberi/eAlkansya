@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Reciept_tile extends StatelessWidget {
-  const Reciept_tile({super.key});
+  final String amount;
+  final String date;
+  const Reciept_tile({super.key, required this.amount, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +14,18 @@ class Reciept_tile extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.blueAccent[100],
             borderRadius: BorderRadius.circular(5)),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [Text("Total Amount: "), Text("*amount*")],
-            ),
-            Row(
-              children: [Text("Date Coined out: "), Text("*Date*")],
-            )
-          ],
+        child: Container(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Text("Total Amount: "), Text("$amount")],
+              ),
+              Row(
+                children: [Text("*${date}*")],
+              )
+            ],
+          ),
         ),
       ),
     );
