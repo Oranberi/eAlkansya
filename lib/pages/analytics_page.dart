@@ -70,7 +70,7 @@ class _analytics_pageState extends State<analytics_page> {
                       },
                     ),
                     Text(
-                      "Coin Drop",
+                      "Coin Inserts",
                       style: TextStyle(color: Colors.blue[700]),
                     )
                   ],

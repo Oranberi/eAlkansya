@@ -1,5 +1,6 @@
 import 'package:ealkansyaapp/pages/bar%20graph/bar_graph_week.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class week_report extends StatefulWidget {
@@ -14,10 +15,19 @@ class _week_reportState extends State<week_report> {
   List<List<DateTime>> weeks = [];
   List<List<double>> weekSummaries = [];
 
+  DateTime initialDay = DateTime.now();
+  List<DateTime> thisWeek = [];
+  String dateSpan = "- to -";
+
   List<double> presentSummary = List<double>.filled(7, 0);
+  List<double> customSummary = List<double>.filled(7, 0);
   List<double> weekSummary = List<double>.filled(7, 0);
   List<double> weekSummary1 = List<double>.filled(7, 0);
   List<double> weekSummary2 = List<double>.filled(7, 0);
+
+  List<double> customWeek = [];
+
+  TextEditingController _dateController = TextEditingController();
 
   List<List<DateTime>> generateLastWeeks() {
     DateTime now = DateTime.now();
@@ -46,6 +56,7 @@ class _week_reportState extends State<week_report> {
   }
 
   Future<void> fetchCoins() async {
+    resetZero();
     final snapshot = await coinRef.get();
     final Map<dynamic, dynamic> coins = snapshot.value as Map<dynamic, dynamic>;
     if (snapshot.exists) {
@@ -58,7 +69,8 @@ class _week_reportState extends State<week_report> {
               //print(thisTime);
               if (isSameDate(thisTime, weeks[i][j])) {
                 print(thisTime.toString() + " " + weeks[i][j].toString());
-                weekSummaries[i][j] += value['value'];
+                int coinvalue = value['value'];
+                weekSummaries[i][j] += double.parse(coinvalue.toString());
               }
             });
           }
@@ -68,8 +80,51 @@ class _week_reportState extends State<week_report> {
         weekSummary2 = weekSummaries[2];
       });
       for (int i = 0; i < weekSummary.length; i++) {
-        print('this $i is ${weekSummary[i]}');
+        //print('this $i is ${weekSummary[i]}');
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("does not eXist"),
+      ));
+    }
+  }
+
+  void getCustomWeek(DateTime selectedDay) {
+    int weekday = selectedDay.weekday;
+    int differenceFromMonday = (weekday + 6) % 7;
+    DateTime startOfWeek =
+        selectedDay.subtract(Duration(days: differenceFromMonday));
+
+    for (int i = 0; i < 7; i++) {
+      thisWeek[i] = startOfWeek.add(Duration(days: i));
+    }
+    for (int i = 0; i < 7; i++) {
+      print(thisWeek[i]);
+    }
+  }
+
+  Future<void> fetchCustomCoins() async {
+    List<double> customSummary = List<double>.filled(7, 0);
+    final snapshot = await coinRef.get();
+    final Map<dynamic, dynamic> coins = snapshot.value as Map<dynamic, dynamic>;
+    if (snapshot.exists) {
+      for (int j = 0; j < 7; j++) {
+        coins.forEach((key, value) {
+          int millis = value['dateInserted'];
+          DateTime thisTime = DateTime.fromMillisecondsSinceEpoch(millis);
+          //print(thisTime);
+          if (isSameDate(thisTime, thisWeek[j])) {
+            setState(() {
+              int coinvalue = value['value'];
+              customSummary[j] += double.parse(coinvalue.toString());
+            });
+            print(thisTime.toString() + " " + weeks[j].toString());
+          }
+        });
+      }
+      setState(() {
+        changeData(customSummary);
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("does not eXist"),
@@ -79,17 +134,33 @@ class _week_reportState extends State<week_report> {
 
   @override
   void initState() {
+    for (int i = 0; i < 7; i++) {
+      thisWeek.add(DateTime.now());
+    }
+    getCustomWeek(initialDay);
     generateLastWeeks();
     for (int i = 0; i < 3; i++) {
       weekSummaries.add(List<double>.filled(7, 0.0));
     }
-    for (int i = 0; i < weeks.length; i++) {
-      print('Week ${i + 1}:');
-      for (int j = 0; j < weeks[i].length; j++) {
-        print('${weeks[i][j]}');
-      }
-    }
     super.initState();
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? _picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now());
+
+    if (_picked != null) {
+      setState(() {
+        getCustomWeek(_picked);
+        fetchCustomCoins();
+        dateSpan =
+            "${formatMonthDay(thisWeek[0])} to ${formatMonthDay(thisWeek[6])}";
+        _dateController.text = dateSpan;
+      });
+    }
   }
 
   @override
@@ -112,17 +183,20 @@ class _week_reportState extends State<week_report> {
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OutlinedButton(
                       onPressed: () => setState(() {
                         changeData(weekSummary);
+                        dateSpan =
+                            "${formatMonthDay(weeks[0][0])} to ${formatMonthDay(weeks[0][6])}";
+                        _dateController.text = dateSpan;
                       }),
                       child: Text(
                         "This Week",
@@ -132,55 +206,104 @@ class _week_reportState extends State<week_report> {
                     OutlinedButton(
                       onPressed: () => setState(() {
                         changeData(weekSummary1);
+                        dateSpan =
+                            "${formatMonthDay(weeks[1][0])} to ${formatMonthDay(weeks[1][6])}";
+                        _dateController.text = dateSpan;
                       }),
                       child: Text("Last Week", style: TextStyle(fontSize: 11)),
                     ),
                     OutlinedButton(
                         onPressed: () => setState(() {
                               changeData(weekSummary2);
+                              dateSpan =
+                                  "${formatMonthDay(weeks[2][0])} to ${formatMonthDay(weeks[2][6])}";
+                              _dateController.text = dateSpan;
                             }),
                         child: Text("Last 2 Weeks",
                             style: TextStyle(fontSize: 11))),
                   ],
                 ),
               ),
+              Container(
+                  margin: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: _dateController,
+                    decoration: InputDecoration(
+                        labelText: 'Date',
+                        prefixIcon: Icon(Icons.calendar_today),
+                        enabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none)),
+                    readOnly: true,
+                    onTap: () {
+                      _selectDate();
+                    },
+                  )),
               SizedBox(
                 height: 200,
                 child: barGraph_Week(
                   weekReport: presentSummary,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
                 child: Text(
-                  "Summary",
+                  dateSpan,
                   style: TextStyle(
-                      color: Colors.blue[700],
                       fontWeight: FontWeight.bold,
-                      fontSize: 22),
+                      fontSize: 20.0,
+                      color: Colors.blue[700]),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(70, 0, 70, 30),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(children: [
-                  daySummary(presentSummary[0], 0),
-                  daySummary(presentSummary[1], 1),
-                  daySummary(presentSummary[2], 2),
-                  daySummary(presentSummary[3], 3),
-                  daySummary(presentSummary[4], 4),
-                  daySummary(presentSummary[5], 5),
-                  daySummary(presentSummary[6], 6),
-                ]),
-              )
+              Expanded(
+                  child: ExpansionTile(
+                title: const Text("Summary", textAlign: TextAlign.center),
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: presentSummary.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return daySummary(presentSummary[index], index);
+                    },
+                  ),
+                ],
+              ))
             ],
           ),
         ),
       ),
     );
+  }
+
+  String formatMonthDay(DateTime date) {
+    if (date.month == 1) {
+      return "Jan. ${date.day}";
+    } else if (date.month == 2) {
+      return "Feb. ${date.day}";
+    } else if (date.month == 3) {
+      return "Mar. ${date.day}";
+    } else if (date.month == 4) {
+      return "Apr. ${date.day}";
+    } else if (date.month == 5) {
+      return "May. ${date.day}";
+    } else if (date.month == 6) {
+      return "Jun. ${date.day}";
+    } else if (date.month == 7) {
+      return "Jul. ${date.day}";
+    } else if (date.month == 8) {
+      return "Aug. ${date.day}";
+    } else if (date.month == 9) {
+      return "Sep. ${date.day}";
+    } else if (date.month == 10) {
+      return "Oct. ${date.day}";
+    } else if (date.month == 11) {
+      return "Nov. ${date.day}";
+    } else if (date.month == 12) {
+      return "Dec. ${date.day}";
+    } else {
+      return "";
+    }
   }
 
   Widget daySummary(double amount, int day) {
@@ -306,6 +429,14 @@ class _week_reportState extends State<week_report> {
         );
       default:
         return Container();
+    }
+  }
+
+  void resetZero() {
+    for (int i = 0; i < weekSummaries.length; i++) {
+      for (int j = 0; j < weekSummaries[i].length; j++) {
+        weekSummaries[i][j] = 0;
+      }
     }
   }
 

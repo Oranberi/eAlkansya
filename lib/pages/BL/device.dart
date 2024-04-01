@@ -17,9 +17,13 @@ class _DeviceScreenState extends State<DeviceScreen> {
   double amount = 0;
   String addedDialog = "";
 
-  int countdown = 2;
+  int countdown = 1;
   Timer? timer;
   bool isOn = false;
+
+  List<int> coinInserted = [];
+
+  late BluetoothCharacteristic request;
 
   @override
   void initState() {
@@ -32,6 +36,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
     List<BluetoothService> services = await device.discoverServices();
     services.forEach((service) {
       service.characteristics.forEach((char) {
+        if (char.uuid.toString() == '19b10001-e8f2-537e-4f6c-d104768a1216') {
+          setState(() {
+            request = char;
+          });
+        }
         if (char.properties.notify) {
           char.setNotifyValue(true);
           char.value.listen((event) {
@@ -59,6 +68,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
           timer.cancel();
           update(amount);
           add(amount);
+          _writeValue(amount.toString());
           isOn = false;
           countdown = 2;
           amount = 0;
@@ -76,6 +86,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
       'isOut': false,
       "dateInserted": now.millisecondsSinceEpoch
     });
+    coinInserted.add(amount.toInt());
   }
 
   Future<void> update(double add) async {
@@ -88,11 +99,58 @@ class _DeviceScreenState extends State<DeviceScreen> {
     }
   }
 
+  Future<void> _writeValue(String value) async {
+    List<int> bytes = value.codeUnits;
+    await request.write(bytes);
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Disconnect?', style: TextStyle(fontSize: 20)),
+          content: const Text('Do you want to disconnect from the coin bank?',
+              style: TextStyle(fontSize: 15)),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                widget.device.disconnect();
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void addItem() {
+    setState(() {
+      coinInserted.add(1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.device.name),
+          leading: BackButton(
+            onPressed: () {
+              _showAlertDialog(context);
+            },
+          ),
           actions: <Widget>[
             StreamBuilder<BluetoothDeviceState>(
               stream: widget.device.state,
@@ -157,18 +215,58 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                child: Container(
-                  child: Text(
-                    addedDialog.toString(),
-                    textAlign: TextAlign.center,
-                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+                child: Text(
+                  "History",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.blue[700]),
                 ),
               ),
-              Text("$countdown")
+              Expanded(
+                  child: Container(
+                padding: EdgeInsets.all(10),
+                child: ListView.builder(
+                    itemCount: coinInserted.length,
+                    itemBuilder: (context, index) {
+                      return customTile(coinInserted[index]);
+                    }),
+              )),
+              FloatingActionButton(onPressed: () {
+                setState(() {
+                  value++;
+                  amount = pulseValue(value);
+                  if (!isOn) {
+                    startCount();
+                  }
+                });
+              })
             ],
           ),
         ));
+  }
+
+  Widget customTile(int coin) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: Colors.blueAccent[100],
+            borderRadius: BorderRadius.circular(5)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Inserted " + coin.toString(),
+              style: TextStyle(color: Colors.black87),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   double pulseValue(int pulse) {

@@ -33,12 +33,88 @@ class StartPage extends State<Start> {
       var totalAmount = snapshot.value;
       setState(() {
         amount = int.parse(totalAmount.toString());
+        amountS = amount.toString();
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("does not eXist"),
       ));
     }
+  }
+
+  Future<int> getAmountnow() async {
+    final snapshot = await dbRef.child("totalAmount").get();
+    if (snapshot.exists) {
+      var totalAmount = snapshot.value;
+      return int.parse(totalAmount.toString());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("does not eXist"),
+      ));
+      return 0;
+    }
+  }
+
+  final savingRef = FirebaseDatabase.instance.ref('savings');
+  final recieptRef = FirebaseDatabase.instance.ref('reciept');
+
+  Future<void> update() async {
+    DateTime nowDate = DateTime.now();
+    final snapshot = await savingRef.child("totalAmount").get();
+    if (snapshot.exists) {
+      var totalAmount = snapshot.value.toString();
+      double theAmount = double.parse(totalAmount);
+      await savingRef.update({'totalAmount': 0}).then((value) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("total amount now: 0"),
+        ));
+      });
+
+      recieptRef
+          .push()
+          .set({'value': theAmount, 'date': nowDate.millisecondsSinceEpoch});
+
+      updateCoin();
+    }
+  }
+
+  Future<void> updateCoin() async {
+    final snapshot = await coinRef.get();
+    final Map<dynamic, dynamic> coins = snapshot.value as Map<dynamic, dynamic>;
+    coins.forEach((key, value) {
+      coinRef.child(key).update({'isOut': true});
+    });
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Withdraw Confirmation',
+              style: TextStyle(fontSize: 20)),
+          content: const Text('Do you want to withdraw savings?',
+              style: TextStyle(fontSize: 15)),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                update();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -76,13 +152,11 @@ class StartPage extends State<Start> {
                 child: Column(
                   children: [
                     OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/saving");
-                      },
+                      onPressed: null,
                       style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.transparent),
-                          backgroundColor: Colors.blue[500]),
-                      child: Text("My Saving",
+                          backgroundColor: Colors.blue[300]),
+                      child: Text("My savings",
                           style: TextStyle(color: Colors.white)),
                     ),
                     Expanded(
@@ -151,43 +225,25 @@ class StartPage extends State<Start> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.receipt_outlined,
-                                    ),
-                                    iconSize: 70,
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, "/reciept_page");
-                                    },
-                                  ),
-                                  Text(
-                                    "Reciept",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "/blue");
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: Colors.transparent),
+                                    backgroundColor: Colors.blue[500]),
+                                child: Text("Connect",
+                                    style: TextStyle(color: Colors.white)),
                               ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.analytics_outlined,
-                                    ),
-                                    iconSize: 70,
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, "/analytics_page");
-                                    },
-                                  ),
-                                  Text(
-                                    "Analytics",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
+                              OutlinedButton(
+                                onPressed: () {
+                                  _showAlertDialog(context);
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: Colors.transparent),
+                                    backgroundColor: Colors.blue[500]),
+                                child: Text("Withdraw",
+                                    style: TextStyle(color: Colors.white)),
                               ),
                             ],
                           ),
@@ -195,31 +251,95 @@ class StartPage extends State<Start> {
                   ],
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Coin History",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              Expanded(
+                  flex: 0,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0, 10, 10, 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[700],
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.radar,
+                                ),
+                                iconSize: 70,
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "/coin");
+                                },
+                              ),
+                              Text(
+                                "Inserts",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[700],
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.receipt_outlined,
+                                ),
+                                iconSize: 70,
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "/reciept_page");
+                                },
+                              ),
+                              Text(
+                                "Withdraws",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[700],
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.analytics_outlined,
+                                ),
+                                iconSize: 70,
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, "/analytics_page");
+                                },
+                              ),
+                              Text(
+                                "Analytics",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   )),
-              Expanded(
-                  child: Container(
-                      constraints: BoxConstraints(minHeight: 200),
-                      child: FirebaseAnimatedList(
-                        query: coinRef.orderByChild('dateInserted'),
-                        reverse: true,
-                        itemBuilder: (context, snapshot, animation, index) {
-                          int millis = int.parse(
-                              snapshot.child('dateInserted').value.toString());
-                          return History_Tile(
-                              amount: snapshot.child('value').value.toString(),
-                              timestamp: getMonth(millis));
-                        },
-                      )))
             ],
           ),
         ));

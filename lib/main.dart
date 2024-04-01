@@ -3,6 +3,7 @@ import 'package:ealkansyaapp/pages/analytics_page.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/coin_report.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/week_report.dart';
 import 'package:ealkansyaapp/pages/bluetooth/blConnect.dart';
+import 'package:ealkansyaapp/pages/coinHistory_page.dart';
 import 'package:ealkansyaapp/pages/mysaving_page.dart';
 import 'package:ealkansyaapp/pages/reciept_page.dart';
 import 'package:ealkansyaapp/pages/start_page.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Start(),
+      debugShowCheckedModeBanner: false,
       routes: {
         '/home': (context) => Start(),
         '/reciept_page': (context) => reciept_page(),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/saving': (context) => mysavings(),
         '/test': (context) => test(),
         '/blue': (context) => FlutterBluetooth(),
+        '/coin': (context) => coinHistory_page(),
       },
     );
   }
