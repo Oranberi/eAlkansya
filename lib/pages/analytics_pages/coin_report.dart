@@ -62,7 +62,10 @@ class _coin_reportState extends State<coin_report> {
         appBar: AppBar(
           title: Align(
             alignment: Alignment.centerLeft,
-            child: Text("Coin Drop"),
+            child: Text(
+              "Coin Drop",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           actions: [
             IconButton(
@@ -70,9 +73,12 @@ class _coin_reportState extends State<coin_report> {
                 fetchCoins();
               },
               icon: Icon(Icons.refresh),
-              color: Colors.blue,
+              color: Colors.white,
             )
           ],
+          backgroundColor: Color(0xff013174),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
         ),
         body: Container(
           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -104,40 +110,47 @@ class _coin_reportState extends State<coin_report> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.blue[200],
+                              color: Color(0xff013174),
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.all(5),
                           child: Column(children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blue[100],
+                                  color: Color(0xffffcc06),
                                   borderRadius: BorderRadius.circular(10)),
                               padding: EdgeInsets.all(10),
                               height: 75,
                               width: 75,
-                              child:
-                                  Center(child: Text("${coinDrop[0].toInt()}")),
+                              child: Center(
+                                  child: Text("${coinDrop[0].toInt()}",
+                                      style:
+                                          TextStyle(color: Color(0xff013174)))),
                             ),
-                            Text("₱ 1")
+                            Text(
+                              "₱ 1",
+                              style: TextStyle(color: Colors.white),
+                            )
                           ]),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.blue[200],
+                              color: Color(0xff013174),
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.all(5),
                           child: Column(children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blue[100],
+                                  color: Color(0xffffcc06),
                                   borderRadius: BorderRadius.circular(10)),
                               padding: EdgeInsets.all(10),
                               height: 75,
                               width: 75,
-                              child:
-                                  Center(child: Text("${coinDrop[1].toInt()}")),
+                              child: Center(
+                                  child: Text("${coinDrop[1].toInt()}",
+                                      style:
+                                          TextStyle(color: Color(0xff013174)))),
                             ),
-                            Text("₱ 5")
+                            Text("₱ 5", style: TextStyle(color: Colors.white))
                           ]),
                         ),
                       ],
@@ -148,40 +161,44 @@ class _coin_reportState extends State<coin_report> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.blue[200],
+                              color: Color(0xff013174),
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.all(5),
                           child: Column(children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blue[100],
+                                  color: Color(0xffffcc06),
                                   borderRadius: BorderRadius.circular(10)),
                               padding: EdgeInsets.all(10),
                               height: 75,
                               width: 75,
-                              child:
-                                  Center(child: Text("${coinDrop[2].toInt()}")),
+                              child: Center(
+                                  child: Text("${coinDrop[2].toInt()}",
+                                      style:
+                                          TextStyle(color: Color(0xff013174)))),
                             ),
-                            Text("₱ 10")
+                            Text("₱ 10", style: TextStyle(color: Colors.white))
                           ]),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.blue[200],
+                              color: Color(0xff013174),
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.all(5),
                           child: Column(children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blue[100],
+                                  color: Color(0xffffcc06),
                                   borderRadius: BorderRadius.circular(10)),
                               padding: EdgeInsets.all(10),
                               height: 75,
                               width: 75,
-                              child:
-                                  Center(child: Text("${coinDrop[3].toInt()}")),
+                              child: Center(
+                                  child: Text("${coinDrop[3].toInt()}",
+                                      style:
+                                          TextStyle(color: Color(0xff013174)))),
                             ),
-                            Text("₱ 20")
+                            Text("₱ 20", style: TextStyle(color: Colors.white))
                           ]),
                         ),
                       ],

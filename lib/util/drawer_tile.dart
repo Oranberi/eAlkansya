@@ -8,22 +8,51 @@ class Drawer_Tile extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                "Hello, User!",
-                style: TextStyle(fontSize: 30, color: Colors.white),
-              )),
-          ListTile(
-            title: Text("Home"),
-            onTap: () {},
+          Container(
+            decoration: BoxDecoration(color: Color(0xff013174)),
+            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Icon(
+                      Icons.radar,
+                      size: 70,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "eAlkansya",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromRGBO(255, 255, 255, 1)),
+                  ),
+                ),
+              ],
+            ),
           ),
           ListTile(
-            title: Text("Profile"),
-            onTap: () {},
+            title: Text("Security"),
+            onTap: () {
+              Navigator.pushNamed(context, "/pin");
+            },
           ),
+          ListTile(
+            title: Text("How to...", style: TextStyle(color: Colors.grey)),
+            //onTap: () {},
+          ),
+          Divider(),
           ListTile(
             title: Text("About"),
+            onTap: () {},
+          ),
+          ListTile(
+            title: Text("Development Team"),
             onTap: () {},
           )
         ],

@@ -25,8 +25,9 @@ class _coinHistory_pageState extends State<coinHistory_page> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Color(0xff013174),
         elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         padding: EdgeInsets.all(10.0),
@@ -37,7 +38,7 @@ class _coinHistory_pageState extends State<coinHistory_page> {
                 child: Text(
                   "Inserts",
                   style: TextStyle(
-                      color: Colors.blue,
+                      color: Color(0xff013174),
                       fontSize: 24,
                       fontWeight: FontWeight.bold),
                 )),

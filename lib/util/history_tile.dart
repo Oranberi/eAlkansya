@@ -13,17 +13,19 @@ class History_Tile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.blueAccent[100],
-            borderRadius: BorderRadius.circular(5)),
+            color: Color(0xff013174), borderRadius: BorderRadius.circular(5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Inserted " + amount,
-              style: TextStyle(color: Colors.black87),
+              "Inserted " + amount + " php coin",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
-            Text("@ " + timestamp.toString(),
-                style: TextStyle(color: Colors.black87))
+            SizedBox(
+              height: 5,
+            ),
+            Text(timestamp.toString(), style: TextStyle(color: Colors.white))
           ],
         ),
       ),

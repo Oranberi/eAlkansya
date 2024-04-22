@@ -19,8 +19,9 @@ class _analytics_pageState extends State<analytics_page> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Color(0xff013174),
         elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -31,7 +32,7 @@ class _analytics_pageState extends State<analytics_page> {
               child: Text(
                 "What would you like to check?",
                 style: TextStyle(
-                    color: Colors.blue[900],
+                    color: Color(0xff013174),
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ),
@@ -46,14 +47,14 @@ class _analytics_pageState extends State<analytics_page> {
                         Icons.dataset_outlined,
                       ),
                       iconSize: 70,
-                      color: Colors.blue[700],
+                      color: Color(0xff013174),
                       onPressed: () {
                         Navigator.pushNamed(context, "/week_report");
                       },
                     ),
                     Text(
                       "Week Report",
-                      style: TextStyle(color: Colors.blue[700]),
+                      style: TextStyle(color: Color(0xff013174)),
                     )
                   ],
                 ),
@@ -64,14 +65,14 @@ class _analytics_pageState extends State<analytics_page> {
                         Icons.data_thresholding_outlined,
                       ),
                       iconSize: 70,
-                      color: Colors.blue[700],
+                      color: Color(0xff013174),
                       onPressed: () {
                         Navigator.pushNamed(context, "/coin_drop");
                       },
                     ),
                     Text(
                       "Coin Inserts",
-                      style: TextStyle(color: Colors.blue[700]),
+                      style: TextStyle(color: Color(0xff013174)),
                     )
                   ],
                 ),
@@ -84,7 +85,7 @@ class _analytics_pageState extends State<analytics_page> {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  color: Colors.blue[400],
+                  color: Color(0xff013174),
                   fontSize: 22),
             ))
           ],

@@ -35,13 +35,13 @@ class barGraph_Week extends StatelessWidget {
             .map((data) => BarChartGroupData(x: data.x, barRods: [
                   BarChartRodData(
                       toY: data.y,
-                      color: Colors.blue[700],
+                      color: Color(0xffffcc06),
                       width: 15,
                       borderRadius: BorderRadius.circular(4),
                       backDrawRodData: BackgroundBarChartRodData(
                         show: true,
                         toY: 200,
-                        color: Colors.blue[200],
+                        color: Color(0xff013174),
                       ))
                 ]))
             .toList()));

@@ -7,7 +7,13 @@ class FlutterBluetooth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        title: Text(
+          'Find Devices',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff013174),
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<BluetoothState>(
           stream: FlutterBlue.instance.state,
@@ -94,9 +100,12 @@ class FindDevicesScreen extends StatelessWidget {
             );
           } else {
             return FloatingActionButton(
-                child: Icon(Icons.search),
-                onPressed: () => FlutterBlue.instance
-                    .startScan(timeout: Duration(seconds: 10)));
+              child: Icon(Icons.search),
+              onPressed: () => FlutterBlue.instance
+                  .startScan(timeout: Duration(seconds: 10)),
+              backgroundColor: Color(0xff013174),
+              foregroundColor: Colors.white,
+            );
           }
         },
       ),

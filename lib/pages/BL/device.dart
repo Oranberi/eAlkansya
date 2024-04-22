@@ -60,7 +60,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
   }
 
   void startCount() {
-    final timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    final timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
       setState(() {
         if (countdown > 0) {
           countdown--;
@@ -70,7 +70,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
           add(amount);
           _writeValue(amount.toString());
           isOn = false;
-          countdown = 2;
+          countdown = 1;
           amount = 0;
           value = 0;
         }
@@ -145,12 +145,18 @@ class _DeviceScreenState extends State<DeviceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.device.name),
+          title: Text(
+            widget.device.name,
+            style: TextStyle(color: Colors.white),
+          ),
           leading: BackButton(
             onPressed: () {
               _showAlertDialog(context);
             },
           ),
+          backgroundColor: Color(0xff013174),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
             StreamBuilder<BluetoothDeviceState>(
               stream: widget.device.state,
@@ -179,7 +185,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       style: Theme.of(context)
                           .primaryTextTheme
                           .button
-                          ?.copyWith(color: Colors.blue),
+                          ?.copyWith(color: Colors.white),
                     ));
               },
             )
@@ -194,7 +200,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   padding: EdgeInsets.all(50),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Colors.blue),
+                      color: Color(0xff013174)),
                   child: Container(
                     width: 150,
                     height: 150,
@@ -210,7 +216,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: Colors.yellow[800],
+                      color: Color(0xffffcc06),
                     ),
                   ),
                 ),
@@ -222,7 +228,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
-                      color: Colors.blue[700]),
+                      color: Color(0xff013174)),
                 ),
               ),
               Expanded(
@@ -254,8 +260,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.blueAccent[100],
-            borderRadius: BorderRadius.circular(5)),
+            color: Color(0xffffcc06),
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: Color(0xff0000cc), width: 5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

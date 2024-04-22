@@ -12,17 +12,28 @@ class Reciept_tile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.blueAccent[100],
-            borderRadius: BorderRadius.circular(5)),
+            color: Color(0xff013174), borderRadius: BorderRadius.circular(5)),
         child: Container(
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [Text("Total Amount: "), Text("$amount")],
+                children: [
+                  Text("Total Amount: ",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text("$amount",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold))
+                ],
+              ),
+              SizedBox(
+                height: 5,
               ),
               Row(
-                children: [Text("*${date}*")],
+                children: [
+                  Text("${date}", style: TextStyle(color: Colors.white))
+                ],
               )
             ],
           ),

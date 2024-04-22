@@ -1,3 +1,4 @@
+import 'package:ealkansyaapp/services/sqlite_service.dart';
 import 'package:ealkansyaapp/util/history_tile.dart';
 import 'package:ealkansyaapp/util/drawer_tile.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -9,7 +10,7 @@ String amountS = amount.toString();
 bool isShown = true;
 DateTime now = DateTime.now();
 
-class Start extends StatefulWidget {
+class start extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -17,14 +18,28 @@ class Start extends StatefulWidget {
   }
 }
 
-class StartPage extends State<Start> {
+class StartPage extends State<start> {
   final dbRef = FirebaseDatabase.instance.ref('savings');
   final coinRef = FirebaseDatabase.instance.ref('coin');
+  late SqliteService _sqliteService;
+  String? pass;
 
   @override
   void initState() {
     getAmount();
     super.initState();
+    this._sqliteService = SqliteService();
+    this._sqliteService.initDB().whenComplete(() => null);
+    fetchPin();
+  }
+
+  void fetchPin() async {
+    pass = await _sqliteService.getPin();
+    if (pass != null) {
+      print("Pin retrieved: $pass");
+    } else {
+      print("No Pin");
+    }
   }
 
   Future<void> getAmount() async {
@@ -139,15 +154,19 @@ class StartPage extends State<Start> {
               color: Colors.white,
             )
           ],
-          backgroundColor: Colors.blue[700],
+          backgroundColor: Color(0xff013174),
           elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        drawer: Drawer(
+          child: Drawer_Tile(),
         ),
         body: Container(
           child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue[700],
+                  color: Color(0xff013174),
                 ),
                 child: Column(
                   children: [
@@ -155,7 +174,7 @@ class StartPage extends State<Start> {
                       onPressed: null,
                       style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.transparent),
-                          backgroundColor: Colors.blue[300]),
+                          backgroundColor: Color(0xff6783ac)),
                       child: Text("My savings",
                           style: TextStyle(color: Colors.white)),
                     ),
@@ -164,7 +183,7 @@ class StartPage extends State<Start> {
                         child: Container(
                             margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                             decoration: BoxDecoration(
-                              color: Colors.blue[500],
+                              color: Color(0xff8098ba),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
                             ),
@@ -231,7 +250,7 @@ class StartPage extends State<Start> {
                                 },
                                 style: OutlinedButton.styleFrom(
                                     side: BorderSide(color: Colors.transparent),
-                                    backgroundColor: Colors.blue[500]),
+                                    backgroundColor: Color(0xff6783ac)),
                                 child: Text("Connect",
                                     style: TextStyle(color: Colors.white)),
                               ),
@@ -241,7 +260,7 @@ class StartPage extends State<Start> {
                                 },
                                 style: OutlinedButton.styleFrom(
                                     side: BorderSide(color: Colors.transparent),
-                                    backgroundColor: Colors.blue[500]),
+                                    backgroundColor: Color(0xff6783ac)),
                                 child: Text("Withdraw",
                                     style: TextStyle(color: Colors.white)),
                               ),
@@ -262,7 +281,7 @@ class StartPage extends State<Start> {
                           padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                           decoration: BoxDecoration(
-                            color: Colors.blue[700],
+                            color: Color(0xff013174),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                           child: Column(
@@ -278,7 +297,7 @@ class StartPage extends State<Start> {
                                 },
                               ),
                               Text(
-                                "Inserts",
+                                "Coin Deposit",
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
@@ -288,7 +307,7 @@ class StartPage extends State<Start> {
                           padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           decoration: BoxDecoration(
-                            color: Colors.blue[700],
+                            color: Color(0xff013174),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                           child: Column(
@@ -304,7 +323,7 @@ class StartPage extends State<Start> {
                                 },
                               ),
                               Text(
-                                "Withdraws",
+                                "Transactions",
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
@@ -314,7 +333,7 @@ class StartPage extends State<Start> {
                           padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           decoration: BoxDecoration(
-                            color: Colors.blue[700],
+                            color: Color(0xff013174),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                           child: Column(

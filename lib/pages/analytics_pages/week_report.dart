@@ -169,7 +169,10 @@ class _week_reportState extends State<week_report> {
       appBar: AppBar(
         title: Align(
           alignment: Alignment.centerLeft,
-          child: Text("Week Report"),
+          child: Text(
+            "Week Report",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         actions: [
           IconButton(
@@ -177,9 +180,12 @@ class _week_reportState extends State<week_report> {
               fetchCoins();
             },
             icon: Icon(Icons.refresh),
-            color: Colors.blue,
+            color: Colors.white,
           )
         ],
+        backgroundColor: Color(0xff013174),
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Container(
@@ -198,6 +204,9 @@ class _week_reportState extends State<week_report> {
                             "${formatMonthDay(weeks[0][0])} to ${formatMonthDay(weeks[0][6])}";
                         _dateController.text = dateSpan;
                       }),
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.transparent),
+                          backgroundColor: Color(0xffffcc06)),
                       child: Text(
                         "This Week",
                         style: TextStyle(fontSize: 11),
@@ -210,6 +219,9 @@ class _week_reportState extends State<week_report> {
                             "${formatMonthDay(weeks[1][0])} to ${formatMonthDay(weeks[1][6])}";
                         _dateController.text = dateSpan;
                       }),
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.transparent),
+                          backgroundColor: Color(0xffffcc06)),
                       child: Text("Last Week", style: TextStyle(fontSize: 11)),
                     ),
                     OutlinedButton(
@@ -219,6 +231,9 @@ class _week_reportState extends State<week_report> {
                                   "${formatMonthDay(weeks[2][0])} to ${formatMonthDay(weeks[2][6])}";
                               _dateController.text = dateSpan;
                             }),
+                        style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.transparent),
+                            backgroundColor: Color(0xffffcc06)),
                         child: Text("Last 2 Weeks",
                             style: TextStyle(fontSize: 11))),
                   ],
