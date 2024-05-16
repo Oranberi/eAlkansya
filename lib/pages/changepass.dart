@@ -98,8 +98,8 @@ class _changePinCodeState extends State<changePinCode> {
                   }
                 },
                 style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.transparent),
-                    backgroundColor: Colors.blue[500]),
+                    side: BorderSide(color: Color(0xff6783ac)),
+                    backgroundColor: Color(0xff013174)),
                 child: Text(
                   "Set PIN",
                   style: TextStyle(color: Colors.white),
@@ -126,11 +126,11 @@ class _changePinCodeState extends State<changePinCode> {
         pinTheme: PinTheme(
             shape: PinCodeFieldShape.box,
             fieldHeight: 50,
-            inactiveColor: Colors.blue[100],
-            selectedColor: Colors.lightBlue,
+            inactiveColor: Color(0xffffcc06),
+            selectedColor: Color(0xffffcc06),
             selectedFillColor: Colors.white,
             activeColor: Colors.blue,
-            activeFillColor: Colors.blue[500],
+            activeFillColor: Color(0xff013174),
             inactiveFillColor: Colors.white,
             borderWidth: 1,
             borderRadius: BorderRadius.circular(8)),

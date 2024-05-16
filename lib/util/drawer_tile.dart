@@ -16,13 +16,8 @@ class Drawer_Tile extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(left: 20),
                   child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Icon(
-                      Icons.radar,
-                      size: 70,
-                      color: Colors.white,
-                    ),
-                  ),
+                      alignment: Alignment.bottomLeft,
+                      child: Image(image: AssetImage("assets/IAL.png"))),
                 ),
                 ListTile(
                   title: Text(

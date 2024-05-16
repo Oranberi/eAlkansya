@@ -18,7 +18,7 @@ class barGraph_Week extends StatelessWidget {
         sunAmount: weekReport[6]);
     thisbarData.initializeBarData_Week();
     return BarChart(BarChartData(
-        maxY: 200,
+        maxY: 300,
         minY: 0,
         gridData: FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -40,7 +40,7 @@ class barGraph_Week extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       backDrawRodData: BackgroundBarChartRodData(
                         show: true,
-                        toY: 200,
+                        toY: 300,
                         color: Color(0xff013174),
                       ))
                 ]))

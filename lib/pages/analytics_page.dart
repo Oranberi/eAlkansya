@@ -37,45 +37,72 @@ class _analytics_pageState extends State<analytics_page> {
                     fontSize: 20),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Column(
               children: [
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.dataset_outlined,
-                      ),
-                      iconSize: 70,
-                      color: Color(0xff013174),
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/week_report");
-                      },
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.dataset_outlined,
+                          ),
+                          iconSize: 70,
+                          color: Color(0xff013174),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/week_report");
+                          },
+                        ),
+                        Text(
+                          "Week Report",
+                          style: TextStyle(color: Color(0xff013174)),
+                        )
+                      ],
                     ),
-                    Text(
-                      "Week Report",
-                      style: TextStyle(color: Color(0xff013174)),
-                    )
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.data_thresholding_outlined,
+                          ),
+                          iconSize: 70,
+                          color: Color(0xff013174),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/coin_drop");
+                          },
+                        ),
+                        Text(
+                          "Coin Inserts",
+                          style: TextStyle(color: Color(0xff013174)),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.data_thresholding_outlined,
-                      ),
-                      iconSize: 70,
-                      color: Color(0xff013174),
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/coin_drop");
-                      },
-                    ),
-                    Text(
-                      "Coin Inserts",
-                      style: TextStyle(color: Color(0xff013174)),
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.format_list_numbered_sharp,
+                          ),
+                          iconSize: 70,
+                          color: Color(0xff013174),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/custom");
+                          },
+                        ),
+                        Text(
+                          "Custom Date",
+                          style: TextStyle(color: Color(0xff013174)),
+                        )
+                      ],
                     )
                   ],
-                ),
+                )
               ],
             ),
             const Spacer(),

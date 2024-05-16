@@ -40,13 +40,11 @@ class _loginState extends State<login> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              padding: EdgeInsets.all(20),
-              child: Icon(
-                Icons.circle,
-                size: 200,
-                color: Colors.blue,
-              ),
+              height: 200,
+              width: 200,
+              margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
+              padding: EdgeInsets.all(5),
+              child: Image(image: AssetImage('assets/IAL.png')),
             ),
             Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -159,8 +157,11 @@ class _loginState extends State<login> {
           handlePressed(num.toString());
         },
         style: OutlinedButton.styleFrom(
-            side: BorderSide(color: Color(0xff013174)),
-            backgroundColor: Color(0xffffcc06)),
-        child: Text(num.toString()));
+            side: BorderSide(color: Color(0xff6783ac)),
+            backgroundColor: Color(0xff013174)),
+        child: Text(
+          num.toString(),
+          style: TextStyle(color: Colors.white),
+        ));
   }
 }

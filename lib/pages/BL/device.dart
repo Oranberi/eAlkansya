@@ -240,15 +240,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       return customTile(coinInserted[index]);
                     }),
               )),
-              FloatingActionButton(onPressed: () {
-                setState(() {
-                  value++;
-                  amount = pulseValue(value);
-                  if (!isOn) {
-                    startCount();
-                  }
-                });
-              })
             ],
           ),
         ));

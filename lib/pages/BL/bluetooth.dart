@@ -1,6 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:ealkansyaapp/pages/BL/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FlutterBluetooth extends StatelessWidget {
   @override
@@ -58,6 +60,11 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class FindDevicesScreen extends StatelessWidget {
+  void requestBluePermission() async {
+    PermissionStatus blueScan = await Permission.bluetoothScan.request();
+    PermissionStatus blueConnect = await Permission.bluetoothConnect.request();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,11 +83,13 @@ class FindDevicesScreen extends StatelessWidget {
                               : result.device.name),
                           subtitle: Text(result.device.id.toString()),
                           tileColor: Colors.blue[50],
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            result.device.connect();
-                            return DeviceScreen(device: result.device);
-                          })),
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              result.device.connect();
+                              return DeviceScreen(device: result.device);
+                            }));
+                          },
                         ))
                     .toList(),
               ),
@@ -101,8 +110,10 @@ class FindDevicesScreen extends StatelessWidget {
           } else {
             return FloatingActionButton(
               child: Icon(Icons.search),
-              onPressed: () => FlutterBlue.instance
-                  .startScan(timeout: Duration(seconds: 10)),
+              onPressed: () {
+                requestBluePermission();
+                FlutterBlue.instance.startScan(timeout: Duration(seconds: 10));
+              },
               backgroundColor: Color(0xff013174),
               foregroundColor: Colors.white,
             );

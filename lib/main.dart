@@ -4,6 +4,7 @@ import 'package:ealkansyaapp/pages/BL/bluetooth.dart';
 import 'package:ealkansyaapp/pages/Security.dart';
 import 'package:ealkansyaapp/pages/analytics_page.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/coin_report.dart';
+import 'package:ealkansyaapp/pages/analytics_pages/costume_range.dart';
 import 'package:ealkansyaapp/pages/analytics_pages/week_report.dart';
 import 'package:ealkansyaapp/pages/bluetooth/blConnect.dart';
 import 'package:ealkansyaapp/pages/changepass.dart';
@@ -86,6 +87,7 @@ class _MyAppState extends State<MyApp> {
           '/test': (context) => test(),
           '/blue': (context) => FlutterBluetooth(),
           '/coin': (context) => coinHistory_page(),
+          '/custom': (context) => custom_range(),
         },
       );
     }
