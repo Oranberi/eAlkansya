@@ -104,6 +104,8 @@ class _custom_rangeState extends State<custom_range> {
               )),
           OutlinedButton(
             onPressed: () => setState(() {
+              days.clear();
+              value.clear();
               fetchCustomCoins(inputstart, inputend);
             }),
             style: OutlinedButton.styleFrom(

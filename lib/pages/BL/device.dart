@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ealkansyaapp/pages/test.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
@@ -15,7 +16,11 @@ class DeviceScreen extends StatefulWidget {
 class _DeviceScreenState extends State<DeviceScreen> {
   int value = 0;
   double amount = 0;
+  double coin = 0;
+  double totalCoin = 0;
   String addedDialog = "";
+
+  double activityTotal = 0;
 
   int countdown = 1;
   Timer? timer;
@@ -24,11 +29,28 @@ class _DeviceScreenState extends State<DeviceScreen> {
   List<int> coinInserted = [];
 
   late BluetoothCharacteristic request;
+  final dbRef = FirebaseDatabase.instance.ref('savings');
 
   @override
   void initState() {
     super.initState();
     connectToDevice(widget.device);
+    getAmount();
+  }
+
+  Future<void> getAmount() async {
+    final snapshot = await dbRef.child("totalAmount").get();
+    if (snapshot.exists) {
+      var totalAmount = snapshot.value;
+      setState(() {
+        coin = double.parse(totalAmount.toString());
+        totalCoin = coin;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("does not eXist"),
+      ));
+    }
   }
 
   void connectToDevice(BluetoothDevice device) async {
@@ -65,10 +87,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
         if (countdown > 0) {
           countdown--;
         } else {
+          //activityTotal += amount;
+          totalCoin += amount;
           timer.cancel();
           update(amount);
           add(amount);
-          _writeValue(amount.toString());
+          _writeValue(totalCoin.toString());
           isOn = false;
           countdown = 1;
           amount = 0;
@@ -202,12 +226,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       borderRadius: BorderRadius.circular(50),
                       color: Color(0xff013174)),
                   child: Container(
-                    width: 150,
+                    width: 200,
                     height: 150,
                     padding: EdgeInsets.all(50),
                     child: Center(
                       child: Text(
-                        amount.toInt().toString(),
+                        totalCoin.toInt().toString(),
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -215,7 +239,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       ),
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(20),
                       color: Color(0xffffcc06),
                     ),
                   ),

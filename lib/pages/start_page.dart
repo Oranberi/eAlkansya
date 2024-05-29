@@ -273,39 +273,14 @@ class StartPage extends State<start> {
               Expanded(
                   flex: 0,
                   child: Container(
+                    margin: EdgeInsets.only(top: 20),
                     padding: EdgeInsets.fromLTRB(0, 10, 10, 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xff013174),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.radar,
-                                ),
-                                iconSize: 70,
-                                color: Colors.white,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, "/coin");
-                                },
-                              ),
-                              Text(
-                                "Coin Deposit",
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          padding: EdgeInsets.fromLTRB(80, 10, 80, 15),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                           decoration: BoxDecoration(
                             color: Color(0xff013174),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -319,18 +294,18 @@ class StartPage extends State<start> {
                                 iconSize: 70,
                                 color: Colors.white,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, "/reciept_page");
+                                  Navigator.pushNamed(context, "/audit");
                                 },
                               ),
                               Text(
-                                "Transactions",
+                                "Audit Log",
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(70, 5, 70, 10),
+                          padding: EdgeInsets.fromLTRB(80, 10, 80, 15),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           decoration: BoxDecoration(
                             color: Color(0xff013174),
