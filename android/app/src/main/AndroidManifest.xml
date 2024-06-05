@@ -2,7 +2,7 @@
     package="com.example.ealkansyaapp">
 
    <application
-        android:label="ealkansyaapp"
+        android:label="eAlkansya"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

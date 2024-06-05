@@ -37,18 +37,18 @@ class Drawer_Tile extends StatelessWidget {
               Navigator.pushNamed(context, "/pin");
             },
           ),
-          ListTile(
-            title: Text("How to...", style: TextStyle(color: Colors.grey)),
-            //onTap: () {},
-          ),
           Divider(),
           ListTile(
             title: Text("About"),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "/about");
+            },
           ),
           ListTile(
             title: Text("Development Team"),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "/devteam");
+            },
           )
         ],
       ),
